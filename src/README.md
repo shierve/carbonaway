@@ -6,4 +6,4 @@ you can explain yor travels to it and it will calculate the co2 emitted from the
 
 Here you can see some example interactions with the bot:
 
-![screenshot]( "Carbon Away")
+![screenshot](https://github.com/shierve/environmentgame/blob/master/images/screenshot1.jpg "Carbon Away")
