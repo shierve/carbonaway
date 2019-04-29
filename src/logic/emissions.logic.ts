@@ -41,4 +41,20 @@ export class EmissionsLogic {
     return this.distanceInKmBetweenEarthCoordinates(c1.lat, c1.lng, c2.lat, c2.lng);
   }
 
+  public static getCo2FromDistanceAndVehicle(distance: number, vehicle: string) {
+    switch (vehicle) {
+      case "plane": {
+        return distance * 115;
+      }
+      case "car": {
+        return distance * 251;
+      }
+      case "train": {
+        return 0;
+      }
+      default:
+        throw new Error("vehicle not implemented");
+    }
+  }
+
 }

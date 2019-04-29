@@ -1,6 +1,7 @@
 import rp = require("request-promise");
 import { NLPLogic } from "./nlp.logic";
 import { TravelFlow } from "./flows/travel.flow";
+import { FlowFactory } from "./flows/flow.factory";
 
 export class BotLogic {
 
@@ -16,16 +17,11 @@ export class BotLogic {
       return;
     }
     const intent = wit.entities.intent[0].value;
-    switch (intent) {
-      case "communicate_travel": {
-        const flow = new TravelFlow(sender);
-        await flow.process(wit);
-        break;
-      }
-      default: {
-        await BotLogic.callSendAPI(sender, "Sorry I did not get your intent");
-      }
+    const flow = await FlowFactory.getFlow(sender, intent);
+    if (!flow) {
+      await BotLogic.callSendAPI(sender, "I did not get your intent");
     }
+    await flow.process(wit);
   }
 
   // Handles messaging_postbacks events
