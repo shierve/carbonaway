@@ -58,13 +58,7 @@ export class TravelFlow implements Flow {
     await db.collection("flows").insertOne({
       type: "travel",
       userId: this.userId,
-      state: {
-        origin: this.state.origin,
-        destination: this.state.destination,
-        distance: this.state.distance,
-        co2: this.state.distance,
-        vehicle: this.state.vehicle,
-      },
+      state: this.state,
     });
   }
 
