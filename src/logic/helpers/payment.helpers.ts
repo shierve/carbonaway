@@ -15,9 +15,5 @@ export const createPayment = async (userId: string, trees: number, amount: numbe
     success_url: "https://example.com/success",
     cancel_url: "https://example.com/cancel",
   });
-  const r = await (stripePub as any).redirectToCheckout({
-    sessionId: session.id,
-  });
-  console.log("heeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeyS");
-  return r;
+  return session;
 };

@@ -52,7 +52,7 @@ export class QueryFlow implements Flow {
     if (this.state.trees >= 10) {
       await BotLogic.sendButton(this.userId, `Planting ${this.state.trees} trees would offset the remaining carbon footprint. Would you like to offset it?`, "http://google.com", "Offset!");
       const payment = await createPayment(this.userId, this.state.trees, treesToDollars(this.state.trees));
-      console.log("payment -> ", payment);
+      console.log("payment -> ", payment.prototype);
       await this.store();
     } else {
       await this.finalize();
