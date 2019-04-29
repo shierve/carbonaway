@@ -54,4 +54,41 @@ export class BotLogic {
     });
   }
 
+  public static async sendButton(recipientId: string, topText: string, buttons: Array<{url: string, title: string}>) {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    await rp({
+      method: "POST",
+      uri: "https://graph.facebook.com/v2.6/me/messages",
+      body: {
+        recipient: {
+          id: recipientId,
+        },
+        message: {
+          attachment: {
+            type: "template",
+            payload: {
+              template_type: "button",
+              text: "What do you want to do next?",
+              buttons: buttons.map((({url, title}) => {
+                  return {
+                    type: "web_url",
+                    url,
+                    title,
+                  };
+                }
+              )),
+            },
+          },
+        },
+        qs: {
+          access_token: process.env.ACCESS_TOKEN,
+        },
+        headers,
+        json: true,
+      },
+    });
+  }
+
 }
