@@ -10,6 +10,7 @@ export class FlowFactory {
     return [
       "communicate_travel",
       "query",
+      "communicate_offset",
     ].includes(intent);
   }
 
@@ -29,8 +30,10 @@ export class FlowFactory {
           return new TravelFlow(userId);
         }
         case "query": {
-          console.log("got query");
           return new QueryFlow(userId);
+        }
+        case "communicate_offset": {
+          return new OffsetFlow(userId);
         }
         default: {
           throw new Error("intent not implemented");

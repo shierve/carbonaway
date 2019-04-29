@@ -59,6 +59,10 @@ export const co2ToTrees = (kgCo2: number) => {
   return Math.ceil(kgCo2 / 100000);
 };
 
+export const treesToCo2 = (trees: number) => {
+  return trees * 100000;
+};
+
 export const treesToDollars = (trees: number) => {
   return trees;
 };

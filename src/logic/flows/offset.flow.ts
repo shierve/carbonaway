@@ -1,10 +1,14 @@
 import { Flow } from "../../models/flow.model";
 import { BotLogic } from "../bot.logic";
 import { bot } from "../../bot";
+import { treesToDollars, treesToCo2 } from "../helpers/emissions.helpers";
+import { TravelLogic } from "../travel.logic";
+import { formatCo2 } from "../helpers/format.helpers";
 
 export interface OffsetState {
   trees?: number;
   price?: number;
+  co2?: number;
 }
 
 export class OffsetFlow implements Flow {
@@ -12,7 +16,7 @@ export class OffsetFlow implements Flow {
   public userId: string;
   public state: OffsetState;
 
-  constructor(userId: string, state: OffsetState ) {
+  constructor(userId: string, state?: OffsetState ) {
     console.log(`new offset flow for user ${userId}`);
     this.userId = userId;
     if (state) {
@@ -24,12 +28,11 @@ export class OffsetFlow implements Flow {
 
   // Handles message events processed by wit
   public async process(message) {
-    //
-  }
-
-  public async initialize() {
-    await BotLogic.callSendAPI(this.userId, `Let's offset! The price for planting ${this.state.trees} trees is $${this.state.price}.`);
-    await this.store();
+    this.state.trees = Number(message.entities.trees[0].value);
+    this.state.price = treesToDollars(this.state.trees);
+    this.state.co2 = treesToCo2(this.state.trees);
+    await this.storeOffset();
+    await BotLogic.callSendAPI(this.userId, `Congratulations! You have offset ${formatCo2(this.state.co2)}kg of CO2.`);
   }
 
   public async store() {
@@ -39,6 +42,14 @@ export class OffsetFlow implements Flow {
       userId: this.userId,
       state: this.state,
     }}, {upsert: true});
+  }
+
+  public async storeOffset() {
+    await TravelLogic.storeOffset({
+      userId: this.userId,
+      timestamp: Date.now(),
+      co2: this.state.co2!,
+    });
   }
 
   public async finalize() {
