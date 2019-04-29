@@ -1,6 +1,5 @@
 import rp = require("request-promise");
 import { NLPLogic } from "./nlp.logic";
-import { TravelFlow } from "./flows/travel.flow";
 import { FlowFactory } from "./flows/flow.factory";
 
 export class BotLogic {
