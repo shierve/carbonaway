@@ -35,6 +35,9 @@ export class QueryFlow implements Flow {
         console.log("start offset");
         await this.startOffset();
         return;
+      } else {
+        await BotLogic.callSendAPI(this.userId, `alright, maybe next time!`);
+        await this.finalize();
       }
     }
     // console.log("interpreted message:", message);
