@@ -63,16 +63,11 @@ export class QueryFlow implements Flow {
 
   public async store() {
     const db = bot.mongo.db("environment");
-    await db.collection("flows").insertOne({
+    await db.collection("flows").updateOne({userId: this.userId}, {$set: {
       type: "query",
       userId: this.userId,
-      state: {
-        total: this.state.total,
-        offsetAmount: this.state.offsetAmount,
-        notOffsetAmount: this.state.notOffsetAmount,
-        trees: this.state.trees,
-      },
-    });
+      state: this.state,
+    }}, {upsert: true});
   }
 
   public async finalize() {

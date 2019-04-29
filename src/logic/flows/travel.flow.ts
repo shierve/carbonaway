@@ -55,11 +55,11 @@ export class TravelFlow implements Flow {
 
   public async store() {
     const db = bot.mongo.db("environment");
-    await db.collection("flows").insertOne({
+    await db.collection("flows").updateOne({userId: this.userId}, {$set: {
       type: "travel",
       userId: this.userId,
       state: this.state,
-    });
+    }}, {upsert: true});
   }
 
   public async finalize() {

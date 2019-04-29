@@ -34,11 +34,11 @@ export class OffsetFlow implements Flow {
 
   public async store() {
     const db = bot.mongo.db("environment");
-    await db.collection("flows").insertOne({
+    await db.collection("flows").updateOne({userId: this.userId}, {$set: {
       type: "offset",
       userId: this.userId,
       state: this.state,
-    });
+    }}, {upsert: true});
   }
 
   public async finalize() {
