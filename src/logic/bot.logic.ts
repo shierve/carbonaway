@@ -70,24 +70,24 @@ export class BotLogic {
             type: "template",
             payload: {
               template_type: "button",
-              text: "What do you want to do next?",
-              buttons: buttons.map((({url, title}) => {
-                  return {
-                    type: "web_url",
-                    url,
-                    title,
-                  };
-                }
-              )),
+              text: "Try the URL button!",
+              buttons: [
+                {
+                  type: "web_url",
+                  url: "https://www.messenger.com/",
+                  title: "URL Button",
+                  webview_height_ratio: "full",
+                },
+              ],
             },
           },
         },
-        qs: {
-          access_token: process.env.ACCESS_TOKEN,
-        },
-        headers,
-        json: true,
       },
+      qs: {
+        access_token: process.env.ACCESS_TOKEN,
+      },
+      headers,
+      json: true,
     });
   }
 
