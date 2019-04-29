@@ -20,7 +20,7 @@ export class TravelFlow implements Flow {
   public state: TravelState;
 
   constructor(userId: string, state?: TravelState ) {
-    console.log(`new travel flow for user ${userId}, with state`, state);
+    console.log(`new travel flow for user ${userId}, with state`);
     this.userId = userId;
     if (state) {
       this.state = state;
@@ -31,17 +31,13 @@ export class TravelFlow implements Flow {
 
   // Handles message events processed by wit
   public async process(message) {
-    // console.log("interpreted message:", message);
     if (message.entities.origin) {
-      console.log("add origin");
       this.state.origin = message.entities.origin[0].value;
     }
     if (message.entities.destination) {
-      console.log("add destination");
       this.state.destination = message.entities.destination[0].value;
     }
     if (message.entities.vehicle) {
-      console.log("add vehicle", message.entities.vehicle[0].value);
       this.state.vehicle = message.entities.vehicle[0].value;
     }
     if (this.isCompleted()) {

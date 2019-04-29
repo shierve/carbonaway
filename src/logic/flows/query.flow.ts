@@ -5,6 +5,7 @@ import { TravelLogic } from "../travel.logic";
 import { formatCo2 } from "../helpers/format.helpers";
 import { co2ToTrees, treesToDollars } from "../helpers/emissions.helpers";
 import { OffsetFlow } from "./offset.flow";
+import { createPayment } from "../helpers/stripe.helpers";
 
 export interface QueryState {
   total?: number;
@@ -32,7 +33,6 @@ export class QueryFlow implements Flow {
   public async process(message) {
     if (this.state.trees) {
       if (message.entities.agree && message.entities.agree[0].value === "yes") {
-        console.log("start offset");
         await this.startOffset();
         return;
       } else {
@@ -51,6 +51,8 @@ export class QueryFlow implements Flow {
     await BotLogic.callSendAPI(this.userId, `you have emitted ${formatCo2(emissions.total)}kg of CO2, and you have offset ${formatCo2(emissions.offset)}g of CO2 this ${period}.`);
     if (this.state.trees >= 10) {
       await BotLogic.sendButton(this.userId, `Planting ${this.state.trees} trees would offset the remaining carbon footprint. Would you like to offset it?`, "http://google.com", "Offset!");
+      const payment = await createPayment(this.userId, this.state.trees, treesToDollars(this.state.trees));
+      console.log("payment -> ", payment);
       await this.store();
     } else {
       await this.finalize();

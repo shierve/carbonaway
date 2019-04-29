@@ -22,6 +22,7 @@
     "@types/mongodb": "^3.1.25",
     "@types/request": "^2.48.1",
     "@types/request-promise": "^4.1.43",
+    "@types/stripe": "^6.25.12",
     "json": "^9.0.6",
     "tslint": "^5.15.0",
     "typescript": "^3.4.2"
@@ -37,6 +38,7 @@
     "moment": "^2.24.0",
     "mongodb": "^3.2.3",
     "request": "^2.88.0",
-    "request-promise": "^4.2.4"
+    "request-promise": "^4.2.4",
+    "stripe": "^6.31.1"
   }
 }
