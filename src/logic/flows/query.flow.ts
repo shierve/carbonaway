@@ -32,6 +32,7 @@ export class QueryFlow implements Flow {
   public async process(message) {
     if (this.state.trees) {
       if (message.entities.agree && message.entities.agree[0].value === "yes") {
+        console.log("start offset");
         await this.startOffset();
         return;
       }
