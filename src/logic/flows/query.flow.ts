@@ -2,7 +2,7 @@ import { Flow } from "../../models/flow.model";
 import { BotLogic } from "../bot.logic";
 import { bot } from "../../bot";
 import { TravelLogic } from "../travel.logic";
-import { formatCo2 } from "../format.helpers";
+import { formatCo2 } from "../helpers/format.helpers";
 
 export interface QueryState {
   period?: string;
