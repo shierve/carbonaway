@@ -30,17 +30,17 @@ export class QueryFlow implements Flow {
 
   // Handles message events processed by wit
   public async process(message) {
-    // if (this.state.trees) {
-    //   if (message.entities.agree && message.entities.agree[0].value === "yes") {
-    //     console.log("start offset");
-    //     await this.startOffset();
-    //     return;
-    //   } else {
-    //     await BotLogic.callSendAPI(this.userId, `alright, maybe next time!`);
-    //     await this.finalize();
-    //     return;
-    //   }
-    // }
+    if (this.state.trees) {
+      if (message.entities.agree && message.entities.agree[0].value === "yes") {
+        console.log("start offset");
+        await this.startOffset();
+        return;
+      } else {
+        await BotLogic.callSendAPI(this.userId, `alright, maybe next time!`);
+        await this.finalize();
+        return;
+      }
+    }
     // console.log("interpreted message:", message);
     const period = message.entities.period[0].value;
     const emissions = await TravelLogic.getPeriodEmissions(this.userId, period!);
