@@ -56,6 +56,9 @@ export const getCo2FromDistanceAndVehicle = (distance: number, vehicle: string) 
 };
 
 export const co2ToTrees = (kgCo2: number) => {
-  console.log("transform ", kgCo2);
   return Math.ceil(kgCo2 / 100000);
+};
+
+export const treesToDollars = (trees: number) => {
+  return trees;
 };

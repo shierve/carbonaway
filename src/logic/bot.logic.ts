@@ -12,12 +12,7 @@ export class BotLogic {
       console.log(`received event: `, event);
       const wit = await NLPLogic.interpret(event.message.text);
       console.log("wit interpreted object:", wit);
-      if (!wit.entities || !wit.entities.intent) {
-        console.log("received message with no intent");
-        await BotLogic.callSendAPI(sender, "I did not understand that");
-        return;
-      }
-      const intent = wit.entities.intent[0].value;
+      const intent = (wit.entities.intent) ? wit.entities.intent[0].value : "answer";
       const flow = await FlowFactory.getFlow(sender, intent);
       if (!flow) {
         await BotLogic.callSendAPI(sender, "I did not get your intent");

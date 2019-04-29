@@ -3,7 +3,8 @@ import { BotLogic } from "../bot.logic";
 import { bot } from "../../bot";
 import { TravelLogic } from "../travel.logic";
 import { formatCo2 } from "../helpers/format.helpers";
-import { co2ToTrees } from "../helpers/emissions.helpers";
+import { co2ToTrees, treesToDollars } from "../helpers/emissions.helpers";
+import { OffsetFlow } from "./offset.flow";
 
 export interface QueryState {
   total?: number;
@@ -29,6 +30,12 @@ export class QueryFlow implements Flow {
 
   // Handles message events processed by wit
   public async process(message) {
+    if (this.state.trees) {
+      if (message.entities.agree && message.entities.agree[0].value === "yes") {
+        await this.startOffset();
+        return;
+      }
+    }
     // console.log("interpreted message:", message);
     const period = message.entities.period[0].value;
     const emissions = await TravelLogic.getPeriodEmissions(this.userId, period!);
@@ -43,6 +50,15 @@ export class QueryFlow implements Flow {
     } else {
       await this.finalize();
     }
+  }
+
+  public async startOffset() {
+    const offsetFlow = new OffsetFlow(this.userId, {
+      trees: this.state.trees,
+      price: treesToDollars(this.state.trees!),
+    });
+    await this.finalize();
+    await offsetFlow.initialize();
   }
 
   public async store() {
