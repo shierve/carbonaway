@@ -1,6 +1,6 @@
 import strip = require("stripe");
 const stripe = new strip(process.env.STRIPE_KEY!);
-const stripePub = new Stripe(process.env.STRIPE_PUB!);
+const stripePub = new strip(process.env.STRIPE_PUB!);
 
 export const createPayment = async (userId: string, trees: number, amount: number) => {
   const session = await (stripe as any).checkout.sessions.create({
