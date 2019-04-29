@@ -3,7 +3,6 @@ import { BotLogic } from "../bot.logic";
 import { bot } from "../../bot";
 import { TravelLogic } from "../travel.logic";
 import { formatCo2 } from "../helpers/format.helpers";
-import { createPayment } from "../helpers/payment.helpers";
 import { co2ToTrees, treesToDollars } from "../helpers/emissions.helpers";
 import { OffsetFlow } from "./offset.flow";
 
