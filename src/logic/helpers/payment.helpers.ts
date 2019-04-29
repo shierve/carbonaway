@@ -18,5 +18,6 @@ export const createPayment = async (userId: string, trees: number, amount: numbe
   const r = await (stripePub as any).redirectToCheckout({
     sessionId: session.id,
   });
+  console.log("heeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeyS");
   return r;
 };
