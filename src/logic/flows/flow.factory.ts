@@ -1,12 +1,14 @@
 import { Flow } from "../../models/flow.model";
 import { bot } from "../../bot";
 import { TravelFlow } from "./travel.flow";
+import { QueryFlow } from "./query.flow";
 
 export class FlowFactory {
 
   public static isFlowStarter(intent: string) {
     return [
       "communicate_travel",
+      "query",
     ].includes(intent);
   }
 
@@ -20,6 +22,10 @@ export class FlowFactory {
       switch (intent) {
         case "communicate_travel": {
           return new TravelFlow(userId);
+        }
+        case "query": {
+          console.log("got query");
+          return new QueryFlow(userId);
         }
         default: {
           throw new Error("intent not implemented");

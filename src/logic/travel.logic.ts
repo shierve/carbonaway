@@ -1,6 +1,8 @@
 import { bot } from "../bot";
+import moment = require("moment");
 
 export interface Travel {
+  userId: string;
   timestamp: number;
   origin: string;
   destination: string;
@@ -17,12 +19,17 @@ export class TravelLogic {
     await db.collection("travels").insertOne(travel);
   }
 
-  public static async getMonthlyEmissions(userId: string) {
+  public static async getPeriodEmissions(userId: string, period: string) {
     const db = bot.mongo.db("environment");
-    const travels = await db.collection("travels").find({userId}).toArray();
+    const startOfMonth = moment().startOf(period as moment.unitOfTime.StartOf).valueOf();
+    console.log("greater than", startOfMonth);
+    console.log("uid", userId);
+    const travels = await db.collection("travels").find({userId, timestamp: {$gte: startOfMonth}}).toArray();
+    console.log("travels:", travels);
     return travels.reduce((acc, v) => {
       acc.total += v.co2;
       if (acc.offset) { acc.offset += v.co2; }
+      return acc;
     }, {total: 0, offset: 0});
   }
 

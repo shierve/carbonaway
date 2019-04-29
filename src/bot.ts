@@ -13,7 +13,7 @@ class Bot {
       this.server.use(bodyParser.json());
       this.server.use(bodyParser.urlencoded({ extended: true }));
       this.server.use("/", new BotRouter().getRouter());
-      this.server.listen(3000, (_) => {
+      this.server.listen(process.env.PORT, (_) => {
         console.log("Listening on port 3000");
       });
     } catch (err) {

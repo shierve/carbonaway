@@ -7,21 +7,27 @@ export class BotLogic {
 
   // Handles messages events
   public static async processMessage(event) {
-    console.log(`received event: `, event);
     const sender = event.sender.id;
-    const wit = await NLPLogic.interpret(event.message.text);
-    console.log("wit interpreted object:", wit);
-    if (!wit.entities || !wit.entities.intent) {
-      console.log("received message with no intent");
-      await BotLogic.callSendAPI(sender, "I did not understand that");
-      return;
+    try {
+      console.log(`received event: `, event);
+      const wit = await NLPLogic.interpret(event.message.text);
+      console.log("wit interpreted object:", wit);
+      if (!wit.entities || !wit.entities.intent) {
+        console.log("received message with no intent");
+        await BotLogic.callSendAPI(sender, "I did not understand that");
+        return;
+      }
+      const intent = wit.entities.intent[0].value;
+      const flow = await FlowFactory.getFlow(sender, intent);
+      if (!flow) {
+        await BotLogic.callSendAPI(sender, "I did not get your intent");
+      }
+      await flow.process(wit);
+    } catch (err) {
+      await BotLogic.callSendAPI(sender, "Sorry, I did not understand that");
+      throw err;
     }
-    const intent = wit.entities.intent[0].value;
-    const flow = await FlowFactory.getFlow(sender, intent);
-    if (!flow) {
-      await BotLogic.callSendAPI(sender, "I did not get your intent");
-    }
-    await flow.process(wit);
+
   }
 
   // Handles messaging_postbacks events

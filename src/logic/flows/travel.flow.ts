@@ -4,6 +4,7 @@ import { EmissionsLogic } from "../emissions.logic";
 import { BotLogic } from "../bot.logic";
 import { bot } from "../../bot";
 import { TravelLogic } from "../travel.logic";
+import { formatDistance, formatCo2 } from "../format.helpers";
 
 export interface TravelState {
   origin?: string;
@@ -82,8 +83,9 @@ export class TravelFlow implements Flow {
   private async complete() {
     const distance = await EmissionsLogic.getDistance(this.state.origin, this.state.destination);
     const co2 = EmissionsLogic.getCo2FromDistanceAndVehicle(distance, this.state.vehicle!);
-    await BotLogic.callSendAPI(this.userId, `you traveled from ${this.state.origin} to ${this.state.destination}, by ${this.state.vehicle}, with a distance of ${distance} km, which emitted ${co2}g of co2 into the atmosphere`);
+    await BotLogic.callSendAPI(this.userId, `you traveled from ${this.state.origin} to ${this.state.destination}, by ${this.state.vehicle}, a total distance of ${formatDistance(distance)} km, which emitted ${formatCo2(co2)}kg of co2 into the atmosphere`);
     await TravelLogic.storeTravel({
+      userId: this.userId,
       timestamp: Date.now(),
       origin: this.state.origin!,
       destination: this.state.destination!,
