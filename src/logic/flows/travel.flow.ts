@@ -20,7 +20,7 @@ export class TravelFlow implements Flow {
   public state: TravelState;
 
   constructor(userId: string, state?: TravelState ) {
-    console.log(`new travel flow for user ${userId}`);
+    console.log(`new travel flow for user ${userId}, with state ${state}`);
     this.userId = userId;
     if (state) {
       this.state = state;
