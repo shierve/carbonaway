@@ -76,6 +76,7 @@ export class BotRouter {
 
   public async health(req: Request, res: Response): Promise<Response | void> {
     try {
+      console.log("-----------------------------------------health");
       return res.sendStatus(200);
     } catch (err) {
       console.log(err);

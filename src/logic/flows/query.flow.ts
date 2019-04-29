@@ -48,7 +48,7 @@ export class QueryFlow implements Flow {
     this.state.offsetAmount = emissions.offset;
     this.state.notOffsetAmount = this.state.total! - this.state.offsetAmount!;
     this.state.trees = co2ToTrees(this.state.notOffsetAmount);
-    await BotLogic.callSendAPI(this.userId, `you have emitted ${formatCo2(emissions.total)}kg of CO2, and you have offset ${formatCo2(emissions.offset)}g of CO2 this ${period}.`);
+    await BotLogic.callSendAPI(this.userId, `you have emitted ${formatCo2(emissions)}kg of CO2 this ${period}.`);
     if (this.state.trees >= 10) {
       await BotLogic.sendButton(this.userId, `Planting ${this.state.trees} trees would offset the remaining carbon footprint. Would you like to offset it?`, "https://carbonfund.org/product/general-donation/", "Offset!");
       await this.store();

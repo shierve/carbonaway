@@ -9,7 +9,7 @@ export interface Travel {
   distance: number;
   co2: number;
   vehicle: string;
-  offset?: boolean;
+  // offset?: boolean;
 }
 
 export class TravelLogic {
@@ -27,10 +27,8 @@ export class TravelLogic {
     const travels = await db.collection("travels").find({userId, timestamp: {$gte: startOfMonth}}).toArray();
     console.log("travels:", travels);
     return travels.reduce((acc, v) => {
-      acc.total += v.co2;
-      if (acc.offset) { acc.offset += v.co2; }
-      return acc;
-    }, {total: 0, offset: 0});
+      return acc + v.co2;
+    }, 0);
   }
 
 }
