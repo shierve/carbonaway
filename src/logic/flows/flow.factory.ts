@@ -17,7 +17,7 @@ export class FlowFactory {
     // find previous flow
     const previousFlow = await FlowFactory.findFlow(userId);
     console.log("prev flow:", previousFlow);
-    if  (intent === "communicate_travel" && previousFlow.type === "travel") {
+    if (previousFlow && intent === "communicate_travel" && previousFlow.type === "travel") {
       console.log("----------------");
       intent = "info";
     }
