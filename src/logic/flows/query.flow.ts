@@ -3,8 +3,7 @@ import { BotLogic } from "../bot.logic";
 import { bot } from "../../bot";
 import { TravelLogic } from "../travel.logic";
 import { formatCo2 } from "../helpers/format.helpers";
-import { co2ToTrees, treesToDollars } from "../helpers/emissions.helpers";
-import { OffsetFlow } from "./offset.flow";
+import { co2ToTrees } from "../helpers/emissions.helpers";
 
 export interface QueryState {
   total?: number;
@@ -32,10 +31,9 @@ export class QueryFlow implements Flow {
   public async process(message) {
     if (this.state.trees) {
       if (message.entities.agree && message.entities.agree[0].value === "yes") {
-        await BotLogic.callSendAPI(this.userId, `alright, let's offset!`);
+        await this.finalize();
         return;
       } else {
-        await BotLogic.callSendAPI(this.userId, `alright, maybe next time!`);
         await this.finalize();
         return;
       }
@@ -48,7 +46,7 @@ export class QueryFlow implements Flow {
     this.state.offsetAmount = offsets;
     this.state.notOffsetAmount = this.state.total! - this.state.offsetAmount!;
     this.state.trees = co2ToTrees(this.state.notOffsetAmount);
-    await BotLogic.callSendAPI(this.userId, `you have emitted ${formatCo2(emissions)}kg of CO2, and you have offset ${formatCo2(offsets)}kg this ${period}.`);
+    await BotLogic.callSendAPI(this.userId, `you have emitted ${formatCo2(emissions)}kg of CO2 💨, and you have offset ${formatCo2(offsets)}kg 🌲 this ${period}.`);
     if (this.state.trees >= 10) {
       await BotLogic.sendButton(this.userId, `Planting ${this.state.trees} trees would offset the remaining carbon footprint for the ${period}. Would you like to offset it?`, "https://carbonfund.org/product/general-donation/", "Offset!");
       await this.store();

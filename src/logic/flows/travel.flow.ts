@@ -1,4 +1,3 @@
-import rp = require("request-promise");
 import { Flow } from "../../models/flow.model";
 import { BotLogic } from "../bot.logic";
 import { bot } from "../../bot";
@@ -73,7 +72,13 @@ export class TravelFlow implements Flow {
   private async complete() {
     const distance = await getDistance(this.state.origin, this.state.destination);
     const co2 = getCo2FromDistanceAndVehicle(distance, this.state.vehicle!);
-    await BotLogic.callSendAPI(this.userId, `you traveled from ${this.state.origin} to ${this.state.destination}, by ${this.state.vehicle}, a total distance of ${formatDistance(distance)} km, which emitted ${formatCo2(co2)}kg of co2 into the atmosphere`);
+    let emoji = "🚗";
+    if (this.state.vehicle === "plane") {
+      emoji = "🛫";
+    } else if (this.state.vehicle === "train") {
+      emoji = "🚈";
+    }
+    await BotLogic.callSendAPI(this.userId, `you traveled from ${this.state.origin} to ${this.state.destination}, by ${this.state.vehicle} ${emoji}, a total distance of ${formatDistance(distance)} km, which emitted ${formatCo2(co2)}kg of co2 into the atmosphere 💨`);
     await TravelLogic.storeTravel({
       userId: this.userId,
       timestamp: Date.now(),

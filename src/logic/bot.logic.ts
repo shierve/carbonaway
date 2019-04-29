@@ -1,6 +1,7 @@
 import rp = require("request-promise");
 import { NLPLogic } from "./nlp.logic";
 import { FlowFactory } from "./flows/flow.factory";
+import { strings } from "../constants";
 
 export class BotLogic {
 
@@ -14,11 +15,11 @@ export class BotLogic {
       const intent = (wit.entities.intent) ? wit.entities.intent[0].value : "answer";
       const flow = await FlowFactory.getFlow(sender, intent);
       if (!flow) {
-        await BotLogic.callSendAPI(sender, "I did not get your intent");
+        await BotLogic.callSendAPI(sender, strings.error);
       }
       await flow.process(wit);
     } catch (err) {
-      await BotLogic.callSendAPI(sender, "Sorry, I did not understand that");
+      await BotLogic.callSendAPI(sender, strings.error);
       throw err;
     }
 
@@ -34,7 +35,7 @@ export class BotLogic {
     const headers = {
       "Content-Type": "application/json",
     };
-    const resp = await rp({
+    await rp({
       method: "POST",
       uri: "https://graph.facebook.com/v2.6/me/messages",
       body: {
