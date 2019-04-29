@@ -54,7 +54,7 @@ export class BotLogic {
     });
   }
 
-  public static async sendButton(recipientId: string, topText: string, buttons: Array<{url: string, title: string}>) {
+  public static async sendButton(recipientId: string, topText: string, url: string, title: string) {
     const headers = {
       "Content-Type": "application/json",
     };
@@ -70,12 +70,12 @@ export class BotLogic {
             type: "template",
             payload: {
               template_type: "button",
-              text: "Try the URL button!",
+              text: topText,
               buttons: [
                 {
                   type: "web_url",
-                  url: "https://www.messenger.com/",
-                  title: "URL Button",
+                  url,
+                  title,
                   webview_height_ratio: "full",
                 },
               ],
