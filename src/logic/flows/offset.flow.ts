@@ -1,9 +1,6 @@
 import { Flow } from "../../models/flow.model";
 import { BotLogic } from "../bot.logic";
 import { bot } from "../../bot";
-import { TravelLogic } from "../travel.logic";
-import { formatCo2 } from "../helpers/format.helpers";
-import { co2ToTrees } from "../helpers/emissions.helpers";
 
 export interface OffsetState {
   trees?: number;

@@ -2,6 +2,7 @@ import { Flow } from "../../models/flow.model";
 import { bot } from "../../bot";
 import { TravelFlow } from "./travel.flow";
 import { QueryFlow } from "./query.flow";
+import { OffsetFlow } from "./offset.flow";
 
 export class FlowFactory {
 
@@ -16,6 +17,9 @@ export class FlowFactory {
     // find previous flow
     const previousFlow = await FlowFactory.findFlow(userId);
     console.log("prev flow:", previousFlow);
+    if  (intent === "communicate_travel" && previousFlow.type === "travel") {
+      intent = "info";
+    }
     // if it is starter
     if (FlowFactory.isFlowStarter(intent)) {
       await FlowFactory.deleteFlow(userId);
@@ -38,6 +42,9 @@ export class FlowFactory {
       switch (previousFlow.type) {
         case "travel": {
           return new TravelFlow(userId, previousFlow.state);
+        }
+        case "offset": {
+          return new OffsetFlow(userId, previousFlow.state);
         }
         default: {
           throw new Error("intent not implemented");
