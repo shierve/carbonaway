@@ -47,6 +47,9 @@ export class FlowFactory {
         case "offset": {
           return new OffsetFlow(userId, previousFlow.state);
         }
+        case "query": {
+          return new QueryFlow(userId, previousFlow.state);
+        }
         default: {
           throw new Error("intent not implemented");
         }
