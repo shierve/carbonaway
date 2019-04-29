@@ -96,7 +96,7 @@ export class TravelFlow implements Flow {
     } else if (!this.state.origin) {
       await BotLogic.callSendAPI(this.userId, `where did you leave from?`);
     } else if (!this.state.vehicle) {
-      await BotLogic.callSendAPI(this.userId, `what vehicle did you travel with?`);
+      await BotLogic.callSendAPI(this.userId, `what vehicle did you travel with? 🛫🚗🚈`);
     }
   }
 
