@@ -54,3 +54,7 @@ export const getCo2FromDistanceAndVehicle = (distance: number, vehicle: string) 
       throw new Error("vehicle not implemented");
   }
 };
+
+export const co2ToTrees = (kgCo2: number) => {
+  return Math.ceil(kgCo2 / 100);
+};
