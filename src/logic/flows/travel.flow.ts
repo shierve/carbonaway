@@ -81,13 +81,15 @@ export class TravelFlow implements Flow {
 
   private async complete() {
     const distance = await EmissionsLogic.getDistance(this.state.origin, this.state.destination);
-    await BotLogic.callSendAPI(this.userId, `you traveled from ${this.state.origin} to ${this.state.destination}, by ${this.state.vehicle}, with a distance of ${distance} km`);
+    const co2 = EmissionsLogic.getCo2FromDistanceAndVehicle(distance, this.state.vehicle!);
+    await BotLogic.callSendAPI(this.userId, `you traveled from ${this.state.origin} to ${this.state.destination}, by ${this.state.vehicle}, with a distance of ${distance} km, which emitted ${co2}g of co2 into the atmosphere`);
     await TravelLogic.storeTravel({
+      timestamp: Date.now(),
       origin: this.state.origin!,
       destination: this.state.destination!,
-      distance: this.state.distance!,
-      co2: this.state.co2,
-      vehicle: this.state.vehicle,
+      distance,
+      co2,
+      vehicle: this.state.vehicle!,
     });
   }
 

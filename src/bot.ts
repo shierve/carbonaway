@@ -6,8 +6,6 @@ class Bot {
   public server: express.Express;
   public mongo: MongoClient;
 
-  constructor() {}
-
   public async start() {
     try {
       this.mongo = await MongoClient.connect(process.env.DB_URI!, {useNewUrlParser: true});
