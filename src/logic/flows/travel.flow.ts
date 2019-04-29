@@ -20,7 +20,7 @@ export class TravelFlow implements Flow {
   public state: TravelState;
 
   constructor(userId: string, state?: TravelState ) {
-    console.log(`new travel flow for user ${userId}, with state ${{...state}}`);
+    console.log(`new travel flow for user ${userId}, with state`, state);
     this.userId = userId;
     if (state) {
       this.state = state;
@@ -48,8 +48,8 @@ export class TravelFlow implements Flow {
       await this.complete();
       await this.finalize();
     } else {
-      await this.continue();
       await this.store();
+      await this.continue();
     }
   }
 
