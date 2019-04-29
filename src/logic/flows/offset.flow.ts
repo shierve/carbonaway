@@ -33,6 +33,7 @@ export class OffsetFlow implements Flow {
     this.state.co2 = treesToCo2(this.state.trees);
     await this.storeOffset();
     await BotLogic.callSendAPI(this.userId, `Congratulations! You have offset ${formatCo2(this.state.co2)}kg of CO2.`);
+    await this.finalize();
   }
 
   public async store() {

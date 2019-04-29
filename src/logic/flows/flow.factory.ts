@@ -19,7 +19,6 @@ export class FlowFactory {
     const previousFlow = await FlowFactory.findFlow(userId);
     console.log("prev flow:", previousFlow);
     if (previousFlow && intent === "communicate_travel" && previousFlow.type === "travel") {
-      console.log("----------------");
       intent = "info";
     }
     // if it is starter
