@@ -33,7 +33,7 @@ export class QueryFlow implements Flow {
     const period = message.entities.period[0].value;
     const emissions = await TravelLogic.getPeriodEmissions(this.userId, period!);
     this.state.total = emissions.total;
-    this.state.offsetAmount = emissions.emissions.offset;
+    this.state.offsetAmount = emissions.offset;
     this.state.notOffsetAmount = this.state.total! - this.state.offsetAmount!;
     this.state.trees = co2ToTrees(this.state.notOffsetAmount);
     await BotLogic.callSendAPI(this.userId, `you have emitted ${formatCo2(emissions.total)}kg of CO2, and you have offset ${formatCo2(emissions.offset)}g of CO2 this ${period}.`);
